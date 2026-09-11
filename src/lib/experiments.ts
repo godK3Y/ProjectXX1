@@ -22,6 +22,14 @@ export const experiments: Experiment[] = [
     status: "done",
   },
   {
+    slug: "parallax-scroll",
+    title: "Smooth parallax scroll",
+    blurb:
+      "Four columns of images travelling at different speeds as you scroll, over Lenis momentum scrolling. Adapted from olivierlarose/smooth-parallax-scroll.",
+    tags: ["scroll", "motion", "lenis"],
+    status: "done",
+  },
+  {
     slug: "map-journey",
     title: "Scroll-driven map journey",
     blurb:
