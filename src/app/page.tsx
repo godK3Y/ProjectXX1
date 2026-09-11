@@ -6,8 +6,9 @@ export default function Home() {
     <main className="min-h-dvh w-full bg-white px-6 py-20 sm:px-10">
       <div className="mx-auto w-full max-w-2xl">
         <header className="mb-16">
-          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
-            ProjectXX1
+          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 ">hi there, welcome to the
+            <span className="text-3xl font-bold text-indigo-600 mx-2">Key's</span>
+            Sandbox.
           </h1>
           <p className="mt-2 text-zinc-500">
             A lab. Things get built here to find out how they work.
