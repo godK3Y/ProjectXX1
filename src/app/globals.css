@@ -12,15 +12,15 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/*
+ * The starter shipped a `@media (prefers-color-scheme: dark)` block here that
+ * flipped these to a near-black background. Removed on purpose: this is a
+ * white canvas, and it should stay white regardless of your OS theme.
+ * Add it back if an experiment wants dark mode.
+ */
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
