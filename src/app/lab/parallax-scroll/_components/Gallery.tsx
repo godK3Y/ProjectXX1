@@ -20,10 +20,10 @@ import "lenis/dist/lenis.css";
  * slide down.
  */
 const COLUMNS = [
-  { images: ["1.jpg", "2.jpg", "3.jpg"], speed: 2, top: "-45%" },
+  { images: ["1.jpg", "2.jpg", "3.jpg"], speed: 4, top: "-45%" },
   { images: ["4.jpg", "5.jpg", "6.jpg"], speed: 3.3, top: "-95%" },
   { images: ["7.jpg", "8.jpg", "9.jpg"], speed: 1.25, top: "-45%" },
-  { images: ["10.jpg", "11.jpg", "12.jpg"], speed: 3, top: "-75%" },
+  { images: ["10.jpg", "11.jpg", "12.jpg"], speed: 1, top: "-75%" },
 ];
 
 export default function Gallery() {
@@ -128,9 +128,9 @@ function Column({
 
 function Spacer({ label }: { label?: string }) {
   return (
-    <div className="flex h-dvh items-center justify-center">
+    <div className="flex items-center justify-center">
       {label && (
-        <span className="font-mono text-xs tracking-widest text-zinc-400 uppercase">
+        <span className="font-mono text-[80px] tracking-widest text-zinc-900 uppercase">
           {label} ↓
         </span>
       )}
