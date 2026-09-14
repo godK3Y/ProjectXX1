@@ -30,6 +30,14 @@ export const experiments: Experiment[] = [
     status: "done",
   },
   {
+    slug: "nav-menu",
+    title: "Nav menu",
+    blurb:
+      "Header whose burger opens a full-width panel: letters rise into place one by one, and hovering a link blurs the others and reveals its image. Adapted from olivierlarose/nav-menu.",
+    tags: ["navigation", "motion"],
+    status: "wip",
+  },
+  {
     slug: "map-journey",
     title: "Scroll-driven map journey",
     blurb:
