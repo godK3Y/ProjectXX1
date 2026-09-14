@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 
 /**
@@ -8,16 +8,21 @@ import Image from "next/image";
  *
  * Every STEP pixels of pointer travel, the next photo drops at the pointer on
  * top of the rest, and the photo dropped VISIBLE steps ago is hidden, so a
- * trail of VISIBLE photos follows you. Positions go straight to the DOM:
- * routing them through state would re-render on every pointermove for nothing.
+ * trail of VISIBLE photos follows you. Each photo also hides itself LIFETIME
+ * ms after it lands, so the trail clears once the pointer stops or leaves.
+ * Positions go straight to the DOM: routing them through state would
+ * re-render on every pointermove for nothing.
  */
 const IMAGES = Array.from({ length: 12 }, (_, i) => `${i + 1}.jpg`);
 const STEP = 150;
 /** Keep below IMAGES.length, or the photo being dropped is also the one hidden. */
 const VISIBLE = 8;
+const LIFETIME = 2000;
 
 export default function ImageTrail() {
   const images = useRef<(HTMLImageElement | null)[]>([]);
+  /** One pending hide per image, so a photo dropped again isn't hidden early by its old timer. */
+  const timers = useRef<number[]>([]);
 
   /**
    * The original kept these as plain `let`s in the component body, which reset
@@ -26,6 +31,11 @@ export default function ImageTrail() {
    * array.
    */
   const trail = useRef({ distance: 0, next: 0, z: 0, lastX: 0, lastY: 0 });
+
+  useEffect(() => {
+    const pending = timers.current;
+    return () => pending.forEach((id) => clearTimeout(id));
+  }, []);
 
   function onPointerMove({ clientX: x, clientY: y }: { clientX: number; clientY: number }) {
     const t = trail.current;
@@ -47,6 +57,11 @@ export default function ImageTrail() {
       // ponytail: z only ever climbs; hitting the CSS max takes ~85,000 km of pointer travel.
       image.style.zIndex = String(++t.z);
       image.style.display = "block";
+
+      clearTimeout(timers.current[t.next]);
+      timers.current[t.next] = window.setTimeout(() => {
+        image.style.display = "none";
+      }, LIFETIME);
     }
 
     t.next = (t.next + 1) % count;

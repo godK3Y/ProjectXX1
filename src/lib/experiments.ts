@@ -41,7 +41,7 @@ export const experiments: Experiment[] = [
     slug: "mouse-image-gallery",
     title: "Mouse image gallery",
     blurb:
-      "Photos drop in a trail behind the pointer, one every 150px of travel, with the oldest vanishing once eight are out. Adapted from olivierlarose/mouse-image-gallery.",
+      "Photos drop in a trail behind the pointer, one every 150px of travel, with the oldest vanishing once eight are out and each one gone two seconds after it lands. Adapted from olivierlarose/mouse-image-gallery.",
     tags: ["pointer", "images"],
     status: "done",
   },
