@@ -25,7 +25,7 @@ export const experiments: Experiment[] = [
     slug: "parallax-scroll",
     title: "Smooth parallax scroll",
     blurb:
-      "Four columns of images travelling at different speeds as you scroll, over Lenis momentum scrolling. Adapted from olivierlarose/smooth-parallax-scroll.",
+      "Parallax styles stacked on one page over Lenis momentum scrolling: columns of images travelling at different speeds (adapted from olivierlarose/smooth-parallax-scroll), then a full-bleed hero image.",
     tags: ["scroll", "motion", "lenis"],
     status: "done",
   },

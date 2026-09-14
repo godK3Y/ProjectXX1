@@ -3,7 +3,6 @@
 import { useRef } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
-import Spacer from "./Spacer";
 
 /**
  * A single full-bleed image that drifts slower than the page — the classic
@@ -30,12 +29,6 @@ type ParallaxImageProps = {
   strength?: number;
   /** Set for an above-the-fold hero, so it isn't lazy-loaded. */
   priority?: boolean;
-  /**
-   * Scroll runway above and below, so the drift has room to play out. On by
-   * default for viewing the effect on its own; turn it off when dropping this
-   * into a real layout, where the surrounding content is the runway.
-   */
-  spacer?: boolean;
 };
 
 export default function ParallaxImage({
@@ -44,7 +37,6 @@ export default function ParallaxImage({
   height = "100vh",
   strength = 0.3,
   priority = false,
-  spacer = true,
 }: ParallaxImageProps) {
   const frame = useRef<HTMLDivElement>(null);
 
@@ -64,30 +56,24 @@ export default function ParallaxImage({
   );
 
   return (
-    <>
-      {spacer && <Spacer label="scroll" />}
-
-      <div ref={frame} className="relative overflow-hidden" style={{ height }}>
-        <motion.div
-          style={{
-            y,
-            height: `${(1 + strength) * 100}%`,
-            top: `-${strength * 100}%`,
-          }}
-          className="absolute inset-x-0"
-        >
-          <Image
-            src={`/images/${src}`}
-            alt={alt}
-            fill
-            sizes="100vw"
-            priority={priority}
-            className="object-cover"
-          />
-        </motion.div>
-      </div>
-
-      {spacer && <Spacer />}
-    </>
+    <div ref={frame} className="relative overflow-hidden" style={{ height }}>
+      <motion.div
+        style={{
+          y,
+          height: `${(1 + strength) * 100}%`,
+          top: `-${strength * 100}%`,
+        }}
+        className="absolute inset-x-0"
+      >
+        <Image
+          src={`/images/${src}`}
+          alt={alt}
+          fill
+          sizes="100vw"
+          priority={priority}
+          className="object-cover"
+        />
+      </motion.div>
+    </div>
   );
 }

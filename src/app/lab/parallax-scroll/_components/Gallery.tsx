@@ -1,19 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
-import { ReactLenis } from "lenis/react";
 import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
-import Spacer from "./Spacer";
-import "lenis/dist/lenis.css";
 
 /**
  * Adapted from olivierlarose/smooth-parallax-scroll (2023).
  *
  * The idea: columns of images, each translated vertically at a different rate
- * as the gallery crosses the viewport. Different rates = parallax. Lenis adds
- * momentum to the scroll itself, which is what makes it feel "smooth" rather
- * than stepped.
+ * as the gallery crosses the viewport. Different rates = parallax. Lenis,
+ * mounted by the page, adds momentum to the scroll itself, which is what makes
+ * it feel "smooth" rather than stepped.
  */
 const DEFAULT_IMAGES = [
   "1.jpg",
@@ -52,8 +49,8 @@ type GalleryProps = {
   /** How many columns to spread the images across. 1 gives a single strip. */
   cols?: number;
   /**
-   * "parallax" drifts each column at its own rate. "grid" holds them still and
-   * drops the scroll runway — the control case for what the motion is buying.
+   * "parallax" drifts each column at its own rate. "grid" holds them still at
+   * natural height — the control case for what the motion is buying.
    */
   type?: "parallax" | "grid";
 };
@@ -64,7 +61,6 @@ export default function Gallery({
   type = "parallax",
 }: GalleryProps) {
   const gallery = useRef<HTMLDivElement>(null);
-  const [viewportHeight, setViewportHeight] = useState(0);
 
   /**
    * 0 when the gallery's top edge hits the bottom of the viewport, 1 when its
@@ -75,55 +71,33 @@ export default function Gallery({
     offset: ["start end", "end start"],
   });
 
-  useEffect(() => {
-    const onResize = () => setViewportHeight(window.innerHeight);
-
-    onResize();
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
-
   const isParallax = type === "parallax";
   const columnCount = Math.max(1, Math.floor(cols));
   const columns = distribute(images, columnCount);
 
   return (
-    /**
-     * The original ran its own requestAnimationFrame loop calling lenis.raf().
-     * It never cancelled that loop or destroyed the instance, so navigating
-     * away left Lenis hijacking scroll on every other page. <ReactLenis> owns
-     * the loop and tears it down on unmount — the leak goes away by deleting
-     * the code that caused it.
-     */
-    <ReactLenis root>
-      {isParallax && <Spacer label="scroll" />}
+    <div
+      ref={gallery}
+      className={`relative flex gap-[2vw] overflow-hidden bg-[#2d2d2d] p-[2vw] ${
+        isParallax ? "h-[175vh]" : "h-auto"
+      }`}
+    >
+      {columns.map((columnImages, index) => {
+        const pace = PACES[index % PACES.length];
 
-      <div
-        ref={gallery}
-        className={`relative flex gap-[2vw] overflow-hidden bg-[#2d2d2d] p-[2vw] ${
-          isParallax ? "h-[175vh]" : "h-auto"
-        }`}
-      >
-        {columns.map((columnImages, index) => {
-          const pace = PACES[index % PACES.length];
-
-          return (
-            <Column
-              key={index}
-              images={columnImages}
-              speed={isParallax ? pace.speed : 0}
-              top={isParallax ? pace.top : "0%"}
-              fillHeight={isParallax}
-              sizes={`(max-width: 768px) 50vw, ${Math.round(100 / columnCount)}vw`}
-              scrollYProgress={scrollYProgress}
-              viewportHeight={viewportHeight}
-            />
-          );
-        })}
-      </div>
-
-      {isParallax && <Spacer />}
-    </ReactLenis>
+        return (
+          <Column
+            key={index}
+            images={columnImages}
+            speed={isParallax ? pace.speed : 0}
+            top={isParallax ? pace.top : "0%"}
+            fillHeight={isParallax}
+            sizes={`(max-width: 768px) 50vw, ${Math.round(100 / columnCount)}vw`}
+            scrollYProgress={scrollYProgress}
+          />
+        );
+      })}
+    </div>
   );
 }
 
@@ -134,7 +108,6 @@ function Column({
   fillHeight,
   sizes,
   scrollYProgress,
-  viewportHeight,
 }: {
   images: string[];
   speed: number;
@@ -142,7 +115,6 @@ function Column({
   fillHeight: boolean;
   sizes: string;
   scrollYProgress: MotionValue<number>;
-  viewportHeight: number;
 }) {
   /**
    * This hook lives in Column, not the parent, on purpose — hooks can't be
@@ -150,10 +122,10 @@ function Column({
    * up top. Giving each column its own component means each one gets its own
    * hook call legally, which is what lets the column count become a prop.
    *
-   * viewportHeight is 0 on the first render (there's no window on the server).
-   * That just means no movement for one frame, until the effect measures.
+   * Travel is in vh, so the browser resolves it against the viewport — no
+   * measuring, no resize listener, and it's right on the first frame.
    */
-  const y = useTransform(scrollYProgress, [0, 1], [0, viewportHeight * speed]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0vh", `${speed * 100}vh`]);
 
   return (
     <motion.div
