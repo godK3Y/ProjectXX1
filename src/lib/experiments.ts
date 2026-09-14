@@ -38,6 +38,14 @@ export const experiments: Experiment[] = [
     status: "wip",
   },
   {
+    slug: "mouse-image-gallery",
+    title: "Mouse image gallery",
+    blurb:
+      "Photos drop in a trail behind the pointer, one every 150px of travel, with the oldest vanishing once eight are out. Adapted from olivierlarose/mouse-image-gallery.",
+    tags: ["pointer", "images"],
+    status: "done",
+  },
+  {
     slug: "map-journey",
     title: "Scroll-driven map journey",
     blurb:
