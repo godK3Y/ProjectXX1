@@ -62,6 +62,14 @@ export const experiments: Experiment[] = [
     status: "done",
   },
   {
+    slug: "mouse-scale-image-gallery",
+    title: "Mouse scale image gallery",
+    blurb:
+      "Rows of two images that trade width as the pointer crosses them, eased by a plain CSS transition. Adapted from olivierlarose/mouse-scale-image-gallery.",
+    tags: ["pointer", "images", "css"],
+    status: "done",
+  },
+  {
     slug: "map-journey",
     title: "Scroll-driven map journey",
     blurb:
