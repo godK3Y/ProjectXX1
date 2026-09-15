@@ -38,9 +38,9 @@ export default function Nav() {
       initial="initial"
       animate="enter"
       exit="exit"
-      className="overflow-hidden"
+      className="flex min-h-0 flex-col overflow-hidden"
     >
-      <div className="mb-20 flex gap-[50px] lg:mb-0 lg:justify-between">
+      <div className="mb-20 flex min-h-0 gap-[50px] overflow-y-auto overscroll-contain lg:mb-0 lg:justify-between">
         <div className="flex flex-col justify-between">
           <div className="mt-10 flex flex-wrap lg:mt-20 lg:max-w-[1200px]">
             {links.map((link, index) => (
@@ -52,7 +52,7 @@ export default function Nav() {
                   animate={
                     selected.isActive && selected.index !== index ? "open" : "closed"
                   }
-                  className="flex overflow-hidden pt-2.5 pr-[30px] text-[32px] font-light lg:pr-[2vw] lg:text-[5vw]"
+                  className="flex flex-wrap gap-x-[0.3em] pt-2.5 pr-[30px] text-[32px] font-light lg:pr-[2vw] lg:text-[5vw]"
                 >
                   {getChars(link.title)}
                 </motion.p>
@@ -98,22 +98,31 @@ export default function Nav() {
 }
 
 /**
- * One span per letter, each rising out of the line's overflow-hidden edge.
+ * One span per letter, each rising out of its word's overflow-hidden edge.
  * The delays stagger left to right on the way in and right to left on the
- * way out. Spaces become non-breaking: a span holding only " " is a flex item
- * with nothing but collapsible whitespace, so it would shrink to zero width.
+ * way out. Letters are grouped per word so a long title wraps between words
+ * on a narrow screen instead of running off the edge; the gap on the line
+ * stands in for the spaces.
  */
-function getChars(word: string) {
-  return word.split("").map((char, i) => (
-    <motion.span
-      key={i}
-      custom={[i * 0.02, (word.length - i) * 0.01]}
-      variants={translate}
-      initial="initial"
-      animate="enter"
-      exit="exit"
-    >
-      {char === " " ? "\u00A0" : char}
-    </motion.span>
+function getChars(title: string) {
+  let i = 0;
+  return title.split(" ").map((word, w) => (
+    <span key={w} className="flex overflow-hidden">
+      {word.split("").map((char) => {
+        const index = i++;
+        return (
+          <motion.span
+            key={index}
+            custom={[index * 0.02, (title.length - index) * 0.01]}
+            variants={translate}
+            initial="initial"
+            animate="enter"
+            exit="exit"
+          >
+            {char}
+          </motion.span>
+        );
+      })}
+    </span>
   ));
 }

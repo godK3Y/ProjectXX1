@@ -19,8 +19,12 @@ export default function Header() {
   return (
     // z-[60] covers the lab layout's fixed "← index" link (z-50); the bar's
     // own left link does the same job.
-    <header className="fixed z-[60] w-full bg-[#f4f0ea] p-2.5 sm:p-5">
-      <div className="relative flex justify-center text-xs uppercase sm:text-[15px]">
+    //
+    // A fixed element never scrolls with the page, so an open menu taller than
+    // the screen used to be cut off. max-h-dvh caps the header at the screen,
+    // and the flex column lets the menu below the bar shrink and scroll inside.
+    <header className="fixed z-[60] flex max-h-dvh w-full flex-col bg-[#f4f0ea] p-2.5 sm:p-5">
+      <div className="relative flex shrink-0 justify-center text-xs uppercase sm:text-[15px]">
         <Link href="/" className="absolute left-0 text-black">
           Key&apos;s Sandbox
         </Link>
