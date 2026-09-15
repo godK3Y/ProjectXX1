@@ -82,7 +82,9 @@ export default function Nav() {
           variants={opacity}
           initial="initial"
           animate={selected.isActive ? "open" : "closed"}
-          className="relative hidden h-[450px] w-[500px] shrink-0 lg:block"
+          // Sticky inside the scrolling menu, so the preview stays in view
+          // while you scroll down to the lower links.
+          className="sticky top-0 hidden h-[450px] w-[500px] shrink-0 self-start lg:block"
         >
           <Image
             src={`/images/${links[selected.index].src}`}
