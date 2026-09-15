@@ -131,10 +131,11 @@ function draw(): { index: number; rest: number[] } {
 const noopSubscribe = () => () => {};
 
 export default function CursorMask() {
-  // A fresh draw per mount, so every visit or refresh gets a new one. The
-  // server draws too, so nothing variant-specific renders until `mounted` —
-  // otherwise the two draws would disagree during hydration.
-  const [{ index, rest }] = useState(draw);
+  // A fresh draw per mount, so every visit or refresh gets a new one, and
+  // another on each click of the button. The server draws too, so nothing
+  // variant-specific renders until `mounted` — otherwise the two draws would
+  // disagree during hydration.
+  const [{ index, rest }, setPick] = useState(draw);
   const mounted = useSyncExternalStore(noopSubscribe, () => true, () => false);
 
   // Off-screen until the pointer first moves (the original started at null,
@@ -200,6 +201,17 @@ export default function CursorMask() {
           {v.visible[2]}
         </p>
       </div>
+
+      {/* z-20: the masked layer (z-10) is invisible outside the circle but
+          still covers the whole screen and would swallow the click. */}
+      <button
+        type="button"
+        onClick={() => setPick(draw())}
+        className="absolute right-6 bottom-6 z-20 cursor-pointer rounded-full border px-4 py-2 font-mono text-xs tracking-widest uppercase transition-opacity hover:opacity-70"
+        style={{ color: v.text, borderColor: v.text }}
+      >
+        ↻ new quote · {VARIANTS.length - rest.length}/{VARIANTS.length}
+      </button>
     </main>
   );
 }
