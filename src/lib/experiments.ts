@@ -46,6 +46,14 @@ export const experiments: Experiment[] = [
     status: "done",
   },
   {
+    slug: "text-opacity-scroll",
+    title: "Text opacity on scroll",
+    blurb:
+      "A paragraph lights up letter by letter as you scroll it into view. Adapted from olivierlarose/text-gradient-opacity-on-scroll, with motion instead of GSAP.",
+    tags: ["scroll", "text", "motion"],
+    status: "done",
+  },
+  {
     slug: "map-journey",
     title: "Scroll-driven map journey",
     blurb:
