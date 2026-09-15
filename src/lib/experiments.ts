@@ -54,6 +54,14 @@ export const experiments: Experiment[] = [
     status: "done",
   },
   {
+    slug: "cursor-hover-mask",
+    title: "Cursor hover mask",
+    blurb:
+      "A small circle follows the cursor and reveals a hidden layer of text underneath; hover the words and it grows. Adapted from olivierlarose/cursor-hover-mask.",
+    tags: ["pointer", "mask", "motion"],
+    status: "done",
+  },
+  {
     slug: "map-journey",
     title: "Scroll-driven map journey",
     blurb:
