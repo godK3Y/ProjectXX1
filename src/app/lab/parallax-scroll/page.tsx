@@ -4,6 +4,7 @@ import "lenis/dist/lenis.css";
 import Gallery from "./_components/Gallery";
 import ParallaxImage from "./_components/ParallaxImage";
 import Spacer from "./_components/Spacer";
+import ZoomParallax from "./_components/ZoomParallax";
 
 export const metadata: Metadata = {
   title: "Smooth parallax scroll — ProjectXX1",
@@ -25,6 +26,8 @@ export default function ParallaxScrollPage() {
       <Gallery />
       <Spacer label="hero image" />
       <ParallaxImage src="hero.jpg" />
+      <Spacer label="zoom" />
+      <ZoomParallax />
       <Spacer />
     </ReactLenis>
   );
