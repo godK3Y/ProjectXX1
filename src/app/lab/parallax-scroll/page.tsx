@@ -4,6 +4,7 @@ import "lenis/dist/lenis.css";
 import Gallery from "./_components/Gallery";
 import ParallaxImage from "./_components/ParallaxImage";
 import Spacer from "./_components/Spacer";
+import CardsParallax from "./_components/CardsParallax";
 import ZoomParallax from "./_components/ZoomParallax";
 
 export const metadata: Metadata = {
@@ -28,6 +29,8 @@ export default function ParallaxScrollPage() {
       <ParallaxImage src="hero.jpg" />
       <Spacer label="zoom" />
       <ZoomParallax />
+      <Spacer label="cards" />
+      <CardsParallax />
       <Spacer />
     </ReactLenis>
   );
